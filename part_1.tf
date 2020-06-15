@@ -139,3 +139,14 @@ resource "null_resource" "download_IP"{
       }
   }
 //creat cloud front end
+
+//toupload files on bucket
+  resource "null_resource" "upload_files"{
+    depends_on = [
+    null_resource.download_IP,
+    ]
+    provisioner "local-exec"{
+          command = "aws s3 sync C:/Users/SSRJ/Desktop/tera/ssw s3://terrabkt"   //change the path for the folder you want to upload just like all inside "ssw" folder is uploading here
+      }
+  }
+//toupload files on bucket end
