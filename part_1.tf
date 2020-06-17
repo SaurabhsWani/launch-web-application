@@ -20,9 +20,12 @@ resource "aws_s3_bucket" "mys3bktssw"{
 }
 
 //create s3 bucket end
+resource "aws_cloudfront_origin_access_identity" "oai" {
+  comment = "Some comment"
+}
 
 locals{
-  s3_origin_id = "myS3Origin123" // enter here a unique name instead of "myS3Origin123"
+  s3_origin_id = "${aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path}" // enter here a unique name instead of "myS3Origin123"
 }
 
 //creat cloud front
@@ -33,7 +36,7 @@ resource "aws_cloudfront_distribution" "mycldfrntssw"{
     origin_id   =  local.s3_origin_id
 
     s3_origin_config{
-      origin_access_identity = ""
+      origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
     }
   }
 
@@ -111,7 +114,7 @@ resource "aws_cloudfront_distribution" "mycldfrntssw"{
   restrictions{
     geo_restriction{
       restriction_type = "whitelist"
-      locations        = ["US", "CA", "GB", "DE"]
+      locations        = ["US", "CA", "GB", "DE","IN"]
     }
   }
 
@@ -124,9 +127,6 @@ resource "aws_cloudfront_distribution" "mycldfrntssw"{
   }
 }
 
-output"cldfrnt"{
-	value=aws_cloudfront_distribution.mycldfrntssw.domain_name
-}
 
 resource "null_resource" "download_IP"{
 
@@ -134,19 +134,33 @@ resource "null_resource" "download_IP"{
     aws_cloudfront_distribution.mycldfrntssw,
     ]
     provisioner "local-exec"{
-          command = "echo ${aws_cloudfront_distribution.mycldfrntssw.domain_name
-}} > your_static_files_domain.text "   //you will get your ip address in "yourdomain.txt" file in directory where you run this code    
+          command = "echo ${aws_cloudfront_distribution.mycldfrntssw.domain_name} > your_static_files_domain.text "   //you will get your ip address in "yourdomain.txt" file in directory where you run this code    
       }
   }
 //creat cloud front end
-
-//toupload files on bucket
+//to upload files on bucket
   resource "null_resource" "upload_files"{
+
     depends_on = [
     null_resource.download_IP,
     ]
     provisioner "local-exec"{
-          command = "aws s3 sync C:/Users/SSRJ/Desktop/tera/ssw s3://terrabkt --acl public-read"   //change the path for the folder you want to upload just like all inside "ssw" folder is uploading here
+          command = "aws s3 sync C:/Users/SSRJ/Desktop/img s3://terrabkt --acl public-read"   //change the path for the folder you want to upload just like all inside "ssw" folder is uploading here
       }
   }
-//toupload files on bucket end
+//to upload files on bucket end
+//to block public acces by updating policy of bucket
+
+resource "aws_s3_bucket_public_access_block" "bpa"{
+
+depends_on = [
+    null_resource.upload_files,
+    ]
+	bucket=aws_s3_bucket.mys3bktssw.id
+	block_public_acls = true
+	block_public_policy = true
+	restrict_public_buckets = true
+	#rember above we gave acl private
+}
+
+//to block public acces by updating policy of bucket end
