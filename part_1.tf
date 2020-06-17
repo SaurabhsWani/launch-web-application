@@ -146,7 +146,7 @@ resource "null_resource" "download_IP"{
     null_resource.download_IP,
     ]
     provisioner "local-exec"{
-          command = "aws s3 sync C:/Users/SSRJ/Desktop/tera/ssw s3://terrabkt"   //change the path for the folder you want to upload just like all inside "ssw" folder is uploading here
+          command = "aws s3 sync C:/Users/SSRJ/Desktop/tera/ssw s3://terrabkt --acl public-read"   //change the path for the folder you want to upload just like all inside "ssw" folder is uploading here
       }
   }
 //toupload files on bucket end
