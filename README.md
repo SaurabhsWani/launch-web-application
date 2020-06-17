@@ -1,11 +1,11 @@
 # To launch Web application using aws cloud and terraform end to end automation
-Task 1 :To create/launch Application using Terraform
+Task :To create/launch Application using Terraform
 
 
 If You want to put your static files of website on the s3 bucket and want to attach that s3 bucket cloud front, then perform  part 1 in the start and then part 2
 
 If You don't want to put your static files of website on the s3 bucket, then perform  part 2 only
-
+here i have given the process of part1 and part2 but you have to run only the files which i given name as part_1 and part_2
 Part 1:
 1. Create S3 bucket,
 2. Upload the static file like images, videos into the s3 bucket and change the permission to public readable.
