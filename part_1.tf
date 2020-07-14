@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "mys3bktssw"{
 
 //create s3 bucket end
 resource "aws_cloudfront_origin_access_identity" "oai" {
-  comment = "Some comment"
+  comment = "Some comment"   // enter here a unique name instead of "some comment"
 }
 
 locals{
@@ -114,7 +114,7 @@ resource "aws_cloudfront_distribution" "mycldfrntssw"{
   restrictions{
     geo_restriction{
       restriction_type = "whitelist"
-      locations        = ["US", "CA", "GB", "DE","IN"]
+      locations        = ["US", "CA", "GB", "DE"]
     }
   }
 
