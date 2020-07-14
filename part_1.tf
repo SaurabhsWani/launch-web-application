@@ -25,7 +25,7 @@ resource "aws_cloudfront_origin_access_identity" "oai" {
 }
 
 locals{
-  s3_origin_id = "${aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path}" // enter here a unique name instead of "myS3Origin123"
+  s3_origin_id = "${aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path}"
 }
 
 //creat cloud front
