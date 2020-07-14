@@ -101,7 +101,7 @@ provisioner "remote-exec"{
       "sudo mkfs.ext4 /dev/xvdf",
       "sudo mount /dev/xvdf /var/www/html",
       "sudo rm -rf /var/www/html/*",
-      "sudo git clone https://github.com/SaurabhsWani/launchwebapplicationssw.git /var/www/html/"  //edit the path of source code enter your site path  	
+      "sudo git clone https://github.com/SaurabhsWani/launch-web-application.git /var/www/html/"  //edit the path of source code enter your site path  	
     ]
   }
 
